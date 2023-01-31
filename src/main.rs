@@ -1,15 +1,18 @@
 mod mp3;
 
-use std::{collections::HashMap, process::{Stdio, Command}, io::{Write, Cursor, Read}, env::args};
+use std::{
+    collections::HashMap,
+    env::args,
+    io::{Cursor, Read, Write},
+    process::{Command, Stdio},
+};
 
 use futures::StreamExt;
 use reqwest::{self, header, Client, ClientBuilder};
-use rodio::{Sink, OutputStream};
+use rodio::{OutputStream, Sink};
 use serde::{Deserialize, Serialize};
 
 use crate::mp3::Mp3StreamDecoder;
-
-
 
 #[derive(Debug, Deserialize, Serialize)]
 struct InvocationInfo {
@@ -53,27 +56,30 @@ struct DownloadInfo {
 
 #[tokio::main]
 async fn main() {
-	//assert!(args().len() > 1, "Pass a track id");
-	let id = args().nth(1).unwrap();
-	//let id = "92072939".to_owned();
+    assert!(args().len() > 1, "Pass a track id");
+    let id = args().nth(1).unwrap();
 
-	let token = std::env::var("YANDEX_MUSIC_TOKEN").expect("YANDEX_MUSIC_TOKEN must be set");
+    let token = std::env::var("YANDEX_MUSIC_TOKEN").expect("YANDEX_MUSIC_TOKEN must be set");
 
-    let mut auth_value = header::HeaderValue::from_str(
-        &token
-    ).unwrap();
+    let mut auth_value = header::HeaderValue::from_str(&token).unwrap();
     auth_value.set_sensitive(true);
 
     let mut headers = reqwest::header::HeaderMap::new();
     headers.insert("Authorization", auth_value);
     headers.insert("User-Agent", "Windows 10".parse().unwrap());
 
-    let client = Client::builder().default_headers(headers.to_owned()).build().unwrap();
+    let client = Client::builder()
+        .default_headers(headers.to_owned())
+        .build()
+        .unwrap();
 
-	println!("Trying to get track info for {}", &id);
+    println!("Trying to get track info for {}", &id);
 
     let result = client
-        .get(std::format!("https://api.music.yandex.net/tracks/{}/download-info?can_use_streaming=false", &id))
+        .get(std::format!(
+            "https://api.music.yandex.net/tracks/{}/download-info?can_use_streaming=false",
+            &id
+        ))
         .send()
         .await
         .unwrap();
@@ -89,10 +95,9 @@ async fn main() {
             .collect();
 
         if let Some(download_url) = download_urls.first() {
-			println!("Found {}", download_url);
+            println!("Found {}", download_url);
 
-
-			println!("Trying to get download info for {}", &id);
+            println!("Trying to get download info for {}", &id);
             let result = client
                 .get(download_url.to_owned())
                 .send()
@@ -105,7 +110,7 @@ async fn main() {
             let download_data: DownloadInfo =
                 serde_xml_rs::from_str(std::str::from_utf8(result.as_bytes()).unwrap()).unwrap();
 
-			println!("Found!");
+            println!("Found!");
 
             let seed = md5::compute(std::format!(
                 "XGRlBW9FXlekgbPrRHuSiA{}{}",
@@ -113,7 +118,7 @@ async fn main() {
                 &download_data.s
             ));
 
-			println!("secret {:x}", seed);
+            println!("secret {:x}", seed);
 
             let mp3_url = format!(
                 "https://{}/get-mp3/{:x}/{}{}",
@@ -122,38 +127,42 @@ async fn main() {
                 download_data.ts,
                 download_data.path.to_owned()
             );
-			println!("Track url {:?}", &mp3_url);
+            println!("Track url {:?}", &mp3_url);
 
-			std::thread::spawn(move || {
-				let blocking_client = reqwest::blocking::Client::builder()
-					.default_headers(headers.to_owned()).build().unwrap();
+            std::thread::spawn(move || {
+                let blocking_client = reqwest::blocking::Client::builder()
+                    .default_headers(headers.to_owned())
+                    .build()
+                    .unwrap();
 
-				let (_stream, stream_handle) = OutputStream::try_default().unwrap();
+                let (_stream, stream_handle) = OutputStream::try_default().unwrap();
 
-				let mut response = blocking_client.get(&mp3_url).send().unwrap();
-				let source = Mp3StreamDecoder::new(response).unwrap();
-				let sink = Sink::try_new(&stream_handle).unwrap();
-				sink.append(source);
-				sink.play();
-	
-				sink.sleep_until_end();
-			}).join().unwrap();
-			
-			// let mut response = client.get(&mp3_url).send().await.unwrap();
-			// let mut stream = response.bytes_stream();
+                let mut response = blocking_client.get(&mp3_url).send().unwrap();
+                let source = Mp3StreamDecoder::new(response).unwrap();
+                let sink = Sink::try_new(&stream_handle).unwrap();
+                sink.append(source);
+                sink.play();
 
-			// let mut child = Command::new("ffplay")
-			// 	.arg("-").arg("-autoexit")/*.arg("-nodisp") */
-			// 	.stdin(Stdio::piped()).spawn().unwrap();
-			
-			// let child_stdin = child.stdin.as_mut().unwrap();
+                sink.sleep_until_end();
+            })
+            .join()
+            .unwrap();
 
-			// while let Ok(item) = stream.next().await.unwrap() {
-			// 	child_stdin.write(&item).unwrap();
-			// }
+            // let mut response = client.get(&mp3_url).send().await.unwrap();
+            // let mut stream = response.bytes_stream();
 
-			// drop(child_stdin);
-			// let exit = child.wait_with_output().unwrap();
+            // let mut child = Command::new("ffplay")
+            // 	.arg("-").arg("-autoexit")/*.arg("-nodisp") */
+            // 	.stdin(Stdio::piped()).spawn().unwrap();
+
+            // let child_stdin = child.stdin.as_mut().unwrap();
+
+            // while let Ok(item) = stream.next().await.unwrap() {
+            // 	child_stdin.write(&item).unwrap();
+            // }
+
+            // drop(child_stdin);
+            // let exit = child.wait_with_output().unwrap();
         }
     } else {
         println!("{:?}", result.text().await.unwrap());
