@@ -1,0 +1,17 @@
+[package]
+name = "yandex-music-cli-player"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = { version = "*", features = ["full"] }
+reqwest = { version = "*", features = ["json", "stream", "blocking"] }
+serde_json = "*"
+serde = { version = "*", features = ["derive"] }
+serde-xml-rs = "*"
+md5 = "*"
+futures = "*"
+minimp3 = "*"
+rodio = "*"
