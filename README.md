@@ -23,3 +23,13 @@
 🚀Not LUA🚀 </br>
 🚀Not HTML🚀 </br>
 🚀Not CSS🚀 </br>
+🚀Not VB.NET🚀 </br>
+🚀Not Pascal🚀 </br>
+🚀Not Кумир🚀 </br>
+🚀Not F#🚀 </br>
+🚀Not Pascal.ABC🚀 </br>
+🚀Not Java🚀 </br>
+🚀Not Kotlin🚀 </br>
+🚀Not Swift🚀 </br>
+🚀Fully in Rust (🚀Blazzing Fast🚀 and
+🚀Memory safe🚀)🚀 </br>
