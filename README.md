@@ -33,3 +33,37 @@
 🚀Not Swift🚀 </br>
 🚀Fully in Rust (🚀Blazzing Fast🚀 and
 🚀Memory safe🚀)🚀 </br>
+
+ - [x] Modern
+ - [x] Highly scalable
+ - [x] Ethereum
+ - [x] blockchain based
+ - [x] IPFS powered
+ - [x] PAAS
+ - [x] robust
+ - [x] async
+ - [x] framework
+ - [x] cross-platform
+ - [x] write once deploy everywhere
+ - [x] cost-saving
+ - [x] microservice
+ - [x] agile
+ - [x] algorithm
+ - [x] hypervisor
+ - [x] extended HTML
+ - [x] rich-client
+ - [x] shared
+ - [x] NoSQL
+ - [x] kubernetes
+ - [x] JSON
+ - [x] storage
+ - [x] decentralized
+ - [x] functional
+ - [x] bug-free
+ - [x] docker
+ - [x] CSS
+ - [x] web app
+ - [x] uses the decentralized web
+ - [x] users are in control of their own data
+ - [x] users are in control of their own identity
+ - [x] users are in control of their own destiny
