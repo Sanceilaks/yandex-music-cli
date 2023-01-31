@@ -1,4 +1,4 @@
-# yandex-music-cli-player
+# 🚀yandex-music-cli-player🚀
 
 🚀Blazzing Fast🚀 </br>
 🚀Memory safe🚀 </br>
