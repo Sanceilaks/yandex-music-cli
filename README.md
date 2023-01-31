@@ -1,25 +1,25 @@
 # yandex-music-cli-player
 
-🚀Blazzing Fast🚀
-🚀Memory safe🚀
-🚀UB safe🚀
-🚀Ban safe🚀
-🚀Bad code safe🚀
-🚀Ref safe🚀
-🚀IO fast🚀
-🚀IO safe🚀
-🚀Web Stream Fast🚀
-🚀Http safe🚀
-🚀Https fast🚀
-🚀Easy to setup🚀
-🚀Setup fast🚀
-🚀Setup safe🚀
-🚀Not C++🚀
-🚀Not Python🚀
-🚀Not C#🚀
-🚀Not JS🚀
-🚀Not VS🚀
-🚀Not PowerShell🚀
-🚀Not LUA🚀
-🚀Not HTML🚀
-🚀Not CSS🚀
+🚀Blazzing Fast🚀 </br>
+🚀Memory safe🚀 </br>
+🚀UB safe🚀 </br>
+🚀Ban safe🚀 </br>
+🚀Bad code safe🚀 </br>
+🚀Ref safe🚀 </br>
+🚀IO fast🚀 </br>
+🚀IO safe🚀 </br>
+🚀Web Stream Fast🚀 </br>
+🚀Http safe🚀 </br>
+🚀Https fast🚀 </br>
+🚀Easy to setup🚀 </br>
+🚀Setup fast🚀 </br>
+🚀Setup safe🚀 </br>
+🚀Not C++🚀 </br>
+🚀Not Python🚀 </br>
+🚀Not C#🚀 </br>
+🚀Not JS🚀 </br>
+🚀Not VS🚀 </br>
+🚀Not PowerShell🚀 </br>
+🚀Not LUA🚀 </br>
+🚀Not HTML🚀 </br>
+🚀Not CSS🚀 </br>
