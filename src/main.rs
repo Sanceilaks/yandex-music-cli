@@ -8,6 +8,7 @@ use std::{
 };
 
 use futures::StreamExt;
+use regex::Regex;
 use reqwest::{self, header, Client, ClientBuilder};
 use rodio::{OutputStream, Sink};
 use serde::{Deserialize, Serialize};
@@ -57,7 +58,21 @@ struct DownloadInfo {
 #[tokio::main]
 async fn main() {
     assert!(args().len() > 1, "Pass a track id");
-    let id = args().nth(1).unwrap();
+
+    let id = match args().nth(1).unwrap().starts_with("http") {
+        true => {
+            let argument = args().nth(1).unwrap();
+            Regex::new(r"(\d{8})")
+                .unwrap()
+                .captures_iter(&argument)
+                .nth(1)
+                .and_then(|cap| Some(cap.get(0).unwrap()))
+                .unwrap()
+                .as_str()
+                .into()
+        }
+        false => args().nth(1).unwrap(),
+    };
 
     let token = std::env::var("YANDEX_MUSIC_TOKEN").expect("YANDEX_MUSIC_TOKEN must be set");
 
@@ -76,10 +91,7 @@ async fn main() {
     println!("Trying to get track info for {}", &id);
 
     let result = client
-        .get(std::format!(
-            "https://api.music.yandex.net/tracks/{}/download-info?can_use_streaming=false",
-            &id
-        ))
+        .get(std::format!("https://api.music.yandex.net/tracks/{id}/download-info?can_use_streaming=false"))
         .send()
         .await
         .unwrap();
